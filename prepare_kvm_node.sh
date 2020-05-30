@@ -126,7 +126,7 @@ for vm_name in $VM_NAMES; do
       --disk /var/lib/libvirt/images/${vm_name}.qcow2 \
       --vcpus=4 \
       --ram=16348 \
-      --network network=br0,model=virtio,portgroup=openvswitch \
+      --network network=br0,model=virtio,portgroup=overcloud \
       --network network=br-ext,model=virtio \
       --network network=br1,model=virtio \
       --virt-type kvm \
