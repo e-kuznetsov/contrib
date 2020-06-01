@@ -3,6 +3,14 @@ set -o pipefail
 
 # Run on jump server
 
+# Undercloud VM config
+undercloud_name=rhel7
+undercloud_suffix=local
+root_password=c0ntrail123
+stack_password=c0ntrail123
+vcpus=8
+vram=32000
+
 if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root"
    exit 1
@@ -148,14 +156,10 @@ gpgcheck = 1
 gpgkey = file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
 EOF
 
-undercloud_name=rhel7
-undercloud_suffix=local
-root_password=c0ntrail123
-stack_password=c0ntrail123
 export LIBGUESTFS_BACKEND=direct
-sudo qemu-img create -f qcow2 /var/lib/libvirt/images/${undercloud_name}.qcow2 100G
-sudo virt-resize --expand /dev/sda1 ${cloud_image} /var/lib/libvirt/images/${undercloud_name}.qcow2
-sudo virt-customize  -a /var/lib/libvirt/images/${undercloud_name}.qcow2 \
+qemu-img create -f qcow2 /var/lib/libvirt/images/${undercloud_name}.qcow2 100G
+virt-resize --expand /dev/sda1 ${cloud_image} /var/lib/libvirt/images/${undercloud_name}.qcow2
+virt-customize  -a /var/lib/libvirt/images/${undercloud_name}.qcow2 \
   --run-command 'xfs_growfs /' \
   --root-password password:${root_password} \
   --hostname ${undercloud_name}.${undercloud_suffix} \
@@ -175,9 +179,6 @@ sudo virt-customize  -a /var/lib/libvirt/images/${undercloud_name}.qcow2 \
   --upload $HOME/local.repo:/etc/yum.repos.d/local.repo \
   --selinux-relabel
 
-undercloud_name=rhel7
-vcpus=8
-vram=32000
 virt-install --name ${undercloud_name} \
   --disk /var/lib/libvirt/images/${undercloud_name}.qcow2 \
   --vcpus=${vcpus} \
