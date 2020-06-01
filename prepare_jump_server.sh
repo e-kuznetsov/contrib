@@ -182,6 +182,7 @@ virt-install --name ${undercloud_name} \
   --disk /var/lib/libvirt/images/${undercloud_name}.qcow2 \
   --vcpus=${vcpus} \
   --ram=${vram} \
+  --network bridge=br-mgmt,model=virtio \
   --network network=br0,model=virtio,portgroup=overcloud \
   --virt-type kvm \
   --import \
@@ -190,3 +191,7 @@ virt-install --name ${undercloud_name} \
   --serial pty \
   --noautoconsole \
   --console pty,target_type=virtio
+
+virsh destroy ${undercloud_name}
+
+#clone this vm for deploy undercloud 
