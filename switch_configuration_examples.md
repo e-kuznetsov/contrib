@@ -49,7 +49,18 @@ commit complete
 ```
 # set interfaces ge-0/0/30 unit 0 family ethernet-switching interface-mode trunk
 # set interfaces ge-0/0/30 unit 0 family ethernet-switching  vlan members [NEWVLAN1 NEWVLAN2]
-# set interfaces ge-0/0/19 native-vlan-id NEWVLAN1
+# set interfaces ge-0/0/30 native-vlan-id NEWVLAN1
+# show interfaces ge-0/0/30 
+native-vlan-id NEWVLAN1;
+unit 0 {
+    family ethernet-switching {
+        interface-mode trunk;
+        vlan {
+            members [NEWVLAN1 NEWVLAN2];
+        }
+        storm-control default;
+    }
+}
 ```
 
 \* use "commit" command to save configuration
