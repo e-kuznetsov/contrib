@@ -1,6 +1,6 @@
 #!/bin/bash
 VM_NAMES="contrail-controller controller compute"
-OVS_BRIGES="br-0 br1 br-ext"
+OVS_BRIGES="br0 br1 br-ext"
 
 # Cleanup VMs
 for vm_name in $VM_NAMES; do
